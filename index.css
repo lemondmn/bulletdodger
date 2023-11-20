@@ -13,6 +13,8 @@
 .datacontainer {
   width: 800px;
   height: 200px;
+  overflow: scroll;
+  max-height: 200px;
   background-color: white;
   position: absolute;
   top: 450px;
@@ -35,4 +37,8 @@
   border: 2px solid lightcoral;
   transition: background-color 0.3s ease;
   cursor: pointer;
+}
+
+p {
+  margin-left: 2px;
 }
