@@ -8,8 +8,6 @@ var bala, balaD=false, nave;
 var salto;
 var menu;
 
-var csv = [];
-
 var velocidadBala;
 var despBala;
 var estatusAire;
@@ -18,11 +16,11 @@ var estatuSuelo;
 var nnNetwork , nnEntrenamiento, nnSalida, datosEntrenamiento=[];
 var modoAuto = false, eCompleto=false;
 
-var juego = new Phaser.Game(w, h, Phaser.CANVAS, '', { preload: preload, create: create, update: update, render:render});
+var juego = new Phaser.Game(w, h, Phaser.CANVAS, 'dodgergame', { preload: preload, create: create, update: update, render:render});
 
 function preload() {
     juego.load.image('fondo', 'assets/game/fondo.jpg');
-    juego.load.spritesheet('mono', 'assets/sprites/altair.png', 32 ,48);
+    juego.load.spritesheet('mono', 'assets/sprites/altair.png',32 ,48);
     juego.load.image('nave', 'assets/game/ufo.png');
     juego.load.image('bala', 'assets/sprites/purple_ball.png');
     juego.load.image('menu', 'assets/game/menu.png');
@@ -76,25 +74,6 @@ function datosDeEntrenamiento(param_entrada){
     return nnSalida[0]>=nnSalida[1];
 }
 
-function downloadCSV(csv, filename) {
-    var csvFile;
-    var downloadLink;
-
-    csvFile = new Blob([csv], {type: "text/csv"});
-
-    downloadLink = document.createElement("a");
-
-    downloadLink.download = filename;
-
-    downloadLink.href = window.URL.createObjectURL(csvFile);
-
-    downloadLink.style.display = "none";
-
-    document.body.appendChild(downloadLink);
-
-    downloadLink.click();
-}
-
 function pausa(){
     juego.paused = true;
     menu = juego.add.sprite(w/2,h/2, 'menu');
@@ -120,7 +99,7 @@ function mPausa(event){
                     enRedNeural();
                     eCompleto=true;
                 }
-                downloadCSV(csv.join("\n"), 'entrenamiento.csv');
+                modoAuto = true;
             }
 
             menu.destroy();
@@ -131,7 +110,6 @@ function mPausa(event){
     }
 }
 
-
 function resetVariables(){
     jugador.body.velocity.x=0;
     jugador.body.velocity.y=0;
@@ -141,11 +119,9 @@ function resetVariables(){
     balaD=false;
 }
 
-
 function saltar(){
     jugador.body.velocity.y = -270;
 }
-
 
 function update() {
 
@@ -191,12 +167,9 @@ function update() {
 
         console.log("Desplazamiento Bala, Velocidad Bala, Estatus, Estatus: ",
             despBala + " " +velocidadBala + " "+ estatusAire+" "+  estatuSuelo);
-        
-        csv.push(despBala + "," + velocidadBala + "," + estatusAire + "," + estatuSuelo);
    }
 
 }
-
 
 function disparo(){
     velocidadBala =  -1 * velocidadRandom(300,800);
