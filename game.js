@@ -38,10 +38,10 @@ var game = new Phaser.Game(w, h, Phaser.CANVAS, "dodgergame", {
 });
 
 function preload() {
-  game.load.image("fondo", "assets/game/fondo.jpg");
-  game.load.spritesheet("mono", "assets/sprites/altair.png", 32, 48);
-  game.load.image("nave", "assets/game/ufo.png");
-  game.load.image("bala", "assets/sprites/purple_ball.png");
+  game.load.image("background", "assets/game/bgmmx.png");
+  game.load.spritesheet("zerorun", "assets/sprites/zero.png", 48, 60);
+  game.load.spritesheet("h_enemy", "assets/game/h_enemy.png", 99, 75);
+  game.load.spritesheet("bala", "assets/sprites/bullets.png", 16, 17);
   game.load.image("menu", "assets/game/menu.png");
 }
 
@@ -50,15 +50,19 @@ function create() {
   game.physics.arcade.gravity.y = 800;
   game.time.desiredFps = 30;
 
-  canvasBackground = game.add.tileSprite(0, 0, w, h, "fondo");
-  h_ufo = game.add.sprite(w - 100, h - 70, "nave");
+  canvasBackground = game.add.tileSprite(0, 0, w, h, "background");
+  h_ufo = game.add.sprite(w - 100, h - 50, "h_enemy");
   hBullet = game.add.sprite(w - 100, h, "bala");
-  playerSprite = game.add.sprite(50, h, "mono");
+  playerSprite = game.add.sprite(50, h, "zerorun");
 
   game.physics.enable(playerSprite);
   playerSprite.body.collideWorldBounds = true;
-  playerSprite.animations.add("corre", [8, 9, 10, 11]);
+  playerSprite.animations.add("corre", [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]);
   playerSprite.animations.play("corre", 10, true);
+  h_ufo.animations.add("vuela", [0, 1, 2]);
+  h_ufo.animations.play("vuela", 10, true);
+  hBullet.animations.add("dispara", [0, 1, 2, 3, 4, 5]);
+  hBullet.animations.play("dispara", 10, true);
 
   game.physics.enable(hBullet);
   hBullet.body.collideWorldBounds = true;
