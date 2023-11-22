@@ -9,11 +9,18 @@ var canvasBackground; // Background sprite
 // Horizontal bullet
 var hBullet;
 var hB_wasShoot = false;
-var h_ufo;
+var h_enemy;
 var hB_speed;
 var hB_displacement;
 var airStatus;
 var groundStatus;
+
+// Vertical bullet
+var vBullet;
+var vB_wasShoot = false;
+var v_enemy;
+var vB_speed;
+var vB_displacement;
 
 // Key variables
 var jumpKey;
@@ -40,8 +47,9 @@ var game = new Phaser.Game(w, h, Phaser.CANVAS, "dodgergame", {
 function preload() {
   game.load.image("background", "assets/game/bgmmx.png");
   game.load.spritesheet("zerorun", "assets/sprites/zero.png", 48, 60);
-  game.load.spritesheet("h_enemy", "assets/game/h_enemy.png", 99, 75);
-  game.load.spritesheet("bala", "assets/sprites/bullets.png", 16, 17);
+  game.load.spritesheet("h_enemy", "assets/sprites/h_enemy.png", 99, 75);
+  game.load.spritesheet("v_enemy", "assets/sprites/v_enemy.png", 49, 33);
+  game.load.spritesheet("bullets", "assets/sprites/bullets.png", 16, 17);
   game.load.image("menu", "assets/game/menu.png");
 }
 
@@ -51,16 +59,19 @@ function create() {
   game.time.desiredFps = 30;
 
   canvasBackground = game.add.tileSprite(0, 0, w, h, "background");
-  h_ufo = game.add.sprite(w - 100, h - 50, "h_enemy");
-  hBullet = game.add.sprite(w - 100, h, "bala");
+  h_enemy = game.add.sprite(w - 100, h - 50, "h_enemy");
+  v_enemy = game.add.sprite(50, 20, "v_enemy");
+  hBullet = game.add.sprite(w - 100, h, "bullets");
   playerSprite = game.add.sprite(50, h, "zerorun");
 
   game.physics.enable(playerSprite);
   playerSprite.body.collideWorldBounds = true;
   playerSprite.animations.add("corre", [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]);
   playerSprite.animations.play("corre", 10, true);
-  h_ufo.animations.add("vuela", [0, 1, 2]);
-  h_ufo.animations.play("vuela", 10, true);
+  h_enemy.animations.add("vuela", [0, 1, 2]);
+  h_enemy.animations.play("vuela", 10, true);
+  v_enemy.animations.add("vuela", [0, 1, 2, 3, 4]);
+  v_enemy.animations.play("vuela", 10, true);
   hBullet.animations.add("dispara", [0, 1, 2, 3, 4, 5]);
   hBullet.animations.play("dispara", 10, true);
 
